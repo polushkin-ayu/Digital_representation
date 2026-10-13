@@ -1,0 +1,7 @@
+{
+  "directional_gradient_error": 4.363870376167256e-14,
+  "hessian_vector_error": 1.1551537504317366e-11,
+  "maximum_gradient_residual": 9.2148511043888e-15,
+  "repeat_ratio_difference": 0.0,
+  "fourier_error_decreases": true
+}

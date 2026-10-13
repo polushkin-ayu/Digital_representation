@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.45cm},
+ width=0.45\textwidth,height=5.5cm, tick label style={font=\footnotesize},
+ label style={font=\small},title style={font=\small},grid=major,
+ legend style={font=\scriptsize,draw=none,fill=white},scaled ticks=false]
+\nextgroupplot[title={(а) Асимптотический коэффициент},xlabel={$\delta$},ylabel={$F/\delta^2$},
+ xmin=0,xmax=.005,ymin=10.55,ymax=10.74,xtick={0,.002,.004},ytick={10.56,10.64,10.72},
+ tick label style={/pgf/number format/fixed,/pgf/number format/precision=3},legend pos=north west]
+\addplot[blue!70!black,mark=*,mark size=1.7pt,thin] coordinates {(4.7346765245968e-05,10.559575614436) (9.4671801454117e-05,10.561191099671) (0.00023651662439938,10.566037803535) (0.00047249090867426,10.574116458549) (0.00094281689192146,10.590276734695) (0.0023408942305932,10.638779489789) (0.0046285575479033,10.719678733711)};
+\addlegendentry{Квадратура}
+\addplot[orange!80!black,only marks,mark=square,mark size=2.5pt] coordinates {(4.7346733781517e-05,10.559582631323) (0.00023651646707739,10.566044828983) (0.00094281626263229,10.590283792405) (0.004628554401421,10.719685964589)};
+\addlegendentry{Фурье, $N=64$}
+\addplot[black,dashed,domain=0:.005] {10.557960170973772};
+\addlegendentry{$1/B$}
+\nextgroupplot[title={(б) Сходимость по гармоникам},xlabel={$N$},ylabel={$|R_N-R_{\rm quad}|$},
+ xmode=log,ymode=log,log basis x=2,xtick={8,16,32,64},xticklabels={8,16,32,64},
+ xmin=7,xmax=72,ymin=3e-6,ymax=.006]
+\addplot[blue!70!black,mark=*,thick] coordinates {(8,0.0030767322141294) (16,0.00042133025506885) (32,5.5161474840304e-05) (64,7.0577093591595e-06)};
+\end{groupplot}
+\end{tikzpicture}
