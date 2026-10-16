@@ -79,3 +79,20 @@ python3 export_tex.py
 ```
 
 check.py сохраняет все результаты в results.json; validate.py проверяет производные конечными разностями и повторяемость; summarize.py восстанавливает этот отчёт; export_tex.py генерирует векторный рисунок PGFPlots и таблицу в ../figures/. Команды выше выполняются из каталога numerical-check/. Дополнительные двухбитовые проверки запускаются командами `python3 check_two_digits.py` и `python3 verify_two_digits.py`; они сохраняют two-digits-results.json и two-digits-verification.json.
+
+## Independent joint optimisation (review revision)
+
+`check_joint_optimization.py` optimises the three periodic tangent fields of a real, pointwise-normalised four-channel instrument. The Fourier coefficients of all fields are varied jointly using L-BFGS. The optimiser does not use the analytic attaining profile, B, chi, or a separated energy formula. This is a local finite-dimensional numerical check, not a proof of global optimality.
+
+The six multiplier scales are 0.04, 0.02, 0.01, 0.005, 0.0025 and 0.00125; the five directions are (1,0), (0,1), (1,1/2), (1,1) and (1,2). Fourier cutoffs are 16, 32, 64 and 128, with 192 Gauss–Legendre nodes on each quarter. The three interior directions determine the free coefficients in F = A*d1^2 + 2*K*d1*d2 + C*d2^2. Raw observables, finite-scale fits, quadratic extrapolations over the four smallest scales, and control runs are in `joint-optimization-results.json`.
+
+At cutoff 128 the extrapolated coefficients are (10.5579674, -1.7e-7, 3.6597942), consistent with the analytical limits (10.5579602, 0, 3.6597924) as resolution increases. These values are empirical extrapolations, not certified error bars. At finite scale the fitted mixed coefficient is not assumed to vanish. The separate mixed dual difference also tends towards zero.
+
+`validate_joint_optimization.py` tests eight gradient directions at three finite-difference steps and computes the energy independently by FFT. The maximum gradient discrepancy is 1.6e-12, the random-start dual spread is 4.9e-14, and increasing quadrature order from 192 to 256 at cutoff 128 changes the dual objective by about 1e-18. Results are in `joint-optimization-validation.json`.
+
+Run with the same Python/NumPy requirements as above:
+
+```sh
+OPENBLAS_NUM_THREADS=1 python3 check_joint_optimization.py
+python3 validate_joint_optimization.py
+```

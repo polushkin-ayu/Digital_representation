@@ -1,0 +1,8 @@
+{
+  "max_gradient_difference": 1.5989171792130108e-12,
+  "fft_energy": 0.0003752557558431111,
+  "analytic_energy": 0.000375255755843112,
+  "fft_difference": -9.215718466126788e-19,
+  "quadrature_dual_difference": -1.0028870095490916e-18,
+  "random_start_dual_spread": 4.910940496491781e-14
+}

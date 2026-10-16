@@ -5,6 +5,7 @@ The first note's energy–error asymptotics are checked in `numerical-check/`:
 
 - `check.py`, `validate.py`: one-bit quadrature, Fourier minimization, spectral convergence and derivative checks.
 - `check_two_digits.py`, `verify_two_digits.py`: two-bit construction and Fourier/Parseval checks.
+- `check_joint_optimization.py`, `validate_joint_optimization.py`: independent four-channel joint optimization, free mixed-coefficient fits, resolution controls and FFT/gradient checks.
 - `summarize.py`, `export_tex.py`: regenerate the [detailed report](numerical-check/README.md) and PGFPlots figure/table in `figures/`.
 - JSON files contain the numerical results. These finite checks support the analytical results; they do not replace proofs.
 
@@ -19,6 +20,8 @@ OPENBLAS_NUM_THREADS=1 python3 check.py
 python3 validate.py
 python3 check_two_digits.py
 python3 verify_two_digits.py
+python3 check_joint_optimization.py
+python3 validate_joint_optimization.py
 python3 summarize.py
 python3 export_tex.py
 ```
