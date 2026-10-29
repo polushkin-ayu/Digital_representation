@@ -62,7 +62,7 @@ def frontier():
 \addplot[black,dotted,thick,domain=0.03:0.18169,samples=60]{{(0.5-1/pi-x)^2/(0.5-4/pi^2)}};\addlegendentry{{$\delta^2/B$}}
 \draw[gray,densely dashdotted] (axis cs:0.18169,-0.03) -- (axis cs:0.18169,{ymax:.3f});
 \node[font=\scriptsize,anchor=south west] at (axis cs:0.185,0) {{$\varepsilon_*$}};
-\nextgroupplot[xlabel={{$\delta=\varepsilon_*-\varepsilon$}},ylabel={{$B\,\mathcal E/(E_\kappa\delta^2)$}},xmin=0,xmax={max(d for d, _ in ratio)*1.04:.3f},legend pos=north west]
+\nextgroupplot[xlabel={{$\delta=\varepsilon_*-\varepsilon$}},ylabel={{$B\,\mathcal E/(E_\kappa\delta^2)$}},scaled x ticks=false,xticklabel style={{/pgf/number format/fixed}},xmin=0,xmax={max(d for d, _ in ratio)*1.04:.3f},legend pos=north west]
 \addplot[blue,thick,mark=*,mark size=1.3pt] table {table(["delta", "ratio"], ratio)};\addlegendentry{{numerical}}
 \addplot[black,dashed,domain=0:0.15]{{1+3.2308451495*x}};\addlegendentry{{$1+c_3\delta$}}
 \addplot[gray,dotted,domain=0:0.15,forget plot]{{1}};
