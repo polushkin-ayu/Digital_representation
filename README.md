@@ -9,7 +9,13 @@ The first note's energy–error asymptotics are checked in `numerical-check/`:
 - `summarize.py`, `export_tex.py`: regenerate the [detailed report](numerical-check/README.md) and PGFPlots figure/table in `figures/`.
 - JSON files contain the numerical results. These finite checks support the analytical results; they do not replace proofs.
 
-## Run
+The global one-digit frontier, without assuming the analytic optimisers, is computed in `sdp-frontier/`:
+
+- `sdp_frontier.py`: semidefinite programme over all instruments with Fourier-truncated Kraus functions (any number of unrecorded channels, complex phases); global frontier at mean momentum 1/2 and 0, and the circulation crossover near balance.
+- `figure_data.py`: PGFPlots figures in `figures/` from the CSV results in `sdp-frontier/data/`.
+- See [`sdp-frontier/README.md`](sdp-frontier/README.md) for the method, output format and run instructions. These scripts need SciPy, CVXPY and SCS in addition to NumPy.
+
+## Run `numerical-check/`
 
 Python 3.11+ and NumPy are required (reference version: 2.3.5; no SciPy).
 
@@ -27,3 +33,7 @@ python3 export_tex.py
 ```
 
 Scripts overwrite their result files. The exported `.tex` files are snippets for a LaTeX document using PGFPlots (including its `groupplots` library).
+
+## License and citation
+
+The code is released under the MIT License (see `LICENSE`). Citation metadata are in `CITATION.cff`.

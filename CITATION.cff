@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this code or its numerical results, please cite it as below."
+title: "Digital_representation: numerical checks for the digital representation of quantum observables"
+type: software
+authors:
+  - family-names: Polushkin
+    given-names: A. Yu.
+    orcid: "https://orcid.org/0000-0003-1824-7952"
+repository-code: "https://github.com/polushkin-ayu/Digital_representation"
+license: MIT
+keywords:
+  - quantum measurement
+  - quantum instruments
+  - energy cost of measurement
+  - semidefinite programming
