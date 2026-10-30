@@ -14,10 +14,21 @@ In these variables:
 - the first-digit error and the kinetic-energy change ΔE/E_κ = Σ l(l + 2μ)|c_l|² are linear in T_a.
 
 The minimal energy at a prescribed error is therefore a semidefinite programme. Restricting the
-Kraus functions to the modes |l| ≤ N gives a finite programme, solved with SCS through CVXPY.
-Each truncated optimum is attained by an admissible instrument, so it is an **upper bound** on
-the exact infimum. Comparing N = 16 with N = 24 measures the truncation error. These finite
-calculations illustrate and test the analytical results; they do not replace the proofs.
+Kraus functions to the modes |l| ≤ N gives a finite programme. Its exact optimum is attained by
+an admissible instrument, so it is an **upper bound** on the infimum over the full class.
+
+The programme is solved approximately with SCS through CVXPY. The values are approximations to
+the truncated optimum, **not certified bounds**: at the requested tolerances SCS may stop with an
+inaccurate status (for example after reaching the iteration limit), and a requested tolerance is
+not the achieved accuracy. The difference between N = 16 and N = 24 is a **stability test**, not a
+guaranteed bound on the truncation error. `audit_points.py` re-solves the reference points quoted
+in the paper and records the solver status, primal and dual residuals, the duality gap, the PSD
+and linear-constraint violations recomputed from the returned operators, the energy and the
+phase current (`data/audit.csv`); `audit_summary.py` turns it into the table `data/audit_summary.md`.
+In the reference run 16 of the 33 audited points stopped at the iteration limit with an inaccurate
+status; at all of them the duality gap was at most 2.5·10⁻⁶ in absolute terms and 1.1·10⁻⁴ relative
+to the quoted quantity (the energy, or the centred energy M + ν in the crossover). These one-digit calculations illustrate the analytical results;
+they do not replace the proofs and do not test the multi-digit theorem.
 
 Two sweeps are computed:
 
@@ -26,7 +37,8 @@ Two sweeps are computed:
 | `global` | E(ε) for ε = 0.04, 0.06, …, 0.50 at μ = 1/2 and μ = 0 | N = 16 and 24 | 1e-8 |
 | `crossover` | M(δ, ν) + ν and the optimiser's momentum transfer for δ = ζ\|ν\|^(2/3), ζ = −1.5, …, 2, at ν = ±10⁻³, 4·10⁻³, 1.6·10⁻² | N = 16 | 1e-10 |
 
-The crossover values are of order 10⁻⁵–10⁻³, hence the tighter tolerance. The interior-point
+The centred crossover values are of order 10⁻⁵–10⁻³, hence the tighter requested tolerance;
+the accuracy actually reached is reported in `data/audit.csv`. The interior-point
 solver Clarabel returned values below the proved lower bound on this problem, so it is not used.
 
 ## Output
@@ -46,6 +58,8 @@ python3 -m pip install -r sdp-frontier/requirements.txt
 python3 sdp-frontier/sdp_frontier.py                 # all points, 6 worker processes
 python3 sdp-frontier/sdp_frontier.py crossover workers=4
 python3 sdp-frontier/figure_data.py                   # writes figures/numerics_*.tex
+python3 sdp-frontier/audit_points.py                  # re-solves the quoted reference points with diagnostics
+python3 sdp-frontier/audit_summary.py > sdp-frontier/data/audit_summary.md
 ```
 
 Results are appended and flushed point by point, and a rerun skips the points already present,

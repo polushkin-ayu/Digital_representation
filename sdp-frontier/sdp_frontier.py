@@ -6,8 +6,13 @@ T_a = sum_r |k_ar><k_ar| on Fourier coefficients k_ar = sum_l c_{ar,l} e^{i l ph
 truncated to |l| <= N.  Kraus normalisation sum_{a,r}|k_ar|^2 = 1 is the set of
 linear constraints sum_{l-l'=m} (T_0+T_1)[l,l'] = delta_{m0}; the error and the
 energy change (spectral formula, Lemma 2.1 of the paper) are linear in T.
-Truncation restricts the admissible class, so every value is an upper bound on
-the exact infimum; comparing N = 16 and N = 24 measures the truncation error.
+Truncation restricts the admissible class, so the exact optimum of the truncated
+programme is an upper bound on the infimum over the full class.  SCS returns an
+approximation to that optimum, not a certified bound: at the requested tolerances
+it may stop with an inaccurate status (e.g. after the iteration limit), and the
+requested tolerance is not the achieved accuracy (see audit_points.py).  The
+difference between N = 16 and N = 24 is a stability test, not a guaranteed
+bound on the truncation error.
 
 Usage (from any directory):
     python3 sdp_frontier.py [outdir] [global] [crossover] [N=16 N=24] [workers=6]
