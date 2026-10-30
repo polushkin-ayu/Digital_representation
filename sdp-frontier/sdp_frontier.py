@@ -65,10 +65,10 @@ class Frontier:
         energy = cp.real(cp.trace(np.diag(L * L) @ Tsum)) + 2 * self.mu * cp.real(cp.trace(np.diag(L) @ Tsum))
         self.prob = cp.Problem(cp.Minimize(energy), cons)
 
-    def solve(self, eps, mu, tol=1e-10):
+    def solve(self, eps, mu, tol=1e-10, max_iters=400000):
         """Return (Delta E / E_kappa, phase current p = transfer + 1/2)."""
         self.target.value, self.mu.value = eps, mu
-        self.prob.solve(solver=cp.SCS, eps_abs=tol, eps_rel=tol, max_iters=400000)
+        self.prob.solve(solver=cp.SCS, eps_abs=tol, eps_rel=tol, max_iters=max_iters)
         if self.prob.status not in ("optimal", "optimal_inaccurate"):
             raise RuntimeError(self.prob.status)
         diag = sum(np.real(np.diag(t.value)) for t in self.T)

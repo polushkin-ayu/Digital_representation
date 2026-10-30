@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Summarise data/audit.csv: accuracy indicators relative to the quantities quoted in the paper."""
+"""Summarise an audit table (default data/audit_final.csv) relative to the quantities quoted in the paper.
+
+Usage: python3 audit_summary.py [datadir] [auditfile.csv]
+"""
 import csv, sys
 from pathlib import Path
 import numpy as np
@@ -9,7 +12,8 @@ from scipy.optimize import brentq
 
 here = Path(__file__).resolve().parent
 data = Path(sys.argv[1]) if len(sys.argv) > 1 else here / "data"
-rows = list(csv.DictReader(open(data / "audit.csv")))
+audit = sys.argv[2] if len(sys.argv) > 2 else "audit_final.csv"   # or audit.csv for the first run
+rows = list(csv.DictReader(open(data / audit)))
 prod_g = {(int(r["N"]), float(r["mu"]), round(float(r["eps"]), 4)): float(r["dE_over_Ek"]) for r in csv.DictReader(open(data / "frontier_global.csv"))}
 prod_c = {(float(r["omega"]), float(r["nu"]), float(r["zeta"])): r for r in csv.DictReader(open(data / "crossover.csv"))}
 

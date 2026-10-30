@@ -9,7 +9,10 @@ Kraus-normalisation equalities, the violation of the error constraint, the energ
 Tr(D T) and the phase current.  Requested tolerances are not treated as achieved
 accuracy; the gap and the constraint violations are reported instead.
 
-Usage: python3 audit_points.py [outfile.csv] [workers=6]   (default: data/audit.csv next to this script)
+Usage: python3 audit_points.py [outfile.csv] [workers=6] [max_iters=400000] [rerun=previous.csv]
+Default outfile: data/audit.csv next to this script.  With rerun=previous.csv only
+the points whose status in previous.csv was inaccurate are solved again (e.g. with
+a larger max_iters); the result goes to outfile and previous.csv is left unchanged.
 """
 import sys, csv, time
 from pathlib import Path
@@ -34,13 +37,21 @@ def points():
     return P
 
 _C = {}
+
+
+def _set_iters(n):
+    global MAX_ITERS
+    MAX_ITERS = n
+MAX_ITERS = 400000
+
+
 def run(pt):
     kind, N, mu, eps, tol, meta = pt
     if N not in _C:
         _C[N] = S.Frontier(N)
     fr = _C[N]
     t0 = time.time()
-    val, p = fr.solve(eps, mu, tol)
+    val, p = fr.solve(eps, mu, tol, MAX_ITERS)
     info = fr.prob.solver_stats.extra_stats["info"]
     T0, T1 = (np.asarray(t.value) for t in fr.T)
     T0, T1 = (T0 + T0.conj().T) / 2, (T1 + T1.conj().T) / 2
@@ -51,7 +62,7 @@ def run(pt):
     err = 0.5 + float(np.real(np.trace(fr.S.T @ T1)))
     energy = float(np.real(np.trace(np.diag(l * l + 2 * mu * l) @ Ts)))
     cur = float(np.dot(l + 0.5, np.real(np.diag(Ts))))
-    row = dict(kind=kind, N=N, mu=mu, eps=eps, tol=tol,
+    row = dict(kind=kind, N=N, mu=mu, eps=eps, tol=tol, max_iters=MAX_ITERS,
                omega=meta[0] if meta else "", nu=meta[1] if meta else "", zeta=meta[2] if meta else "",
                status=fr.prob.status, scs_status=info["status"], iters=info["iter"],
                res_pri=info["res_pri"], res_dual=info["res_dual"], gap=info["gap"],
@@ -62,10 +73,19 @@ def run(pt):
     return row
 
 if __name__ == "__main__":
-    out = Path(sys.argv[1]) if len(sys.argv) > 1 and not sys.argv[1].startswith("workers=") else Path(__file__).resolve().parent / "data" / "audit.csv"
-    workers = next((int(a[8:]) for a in sys.argv[1:] if a.startswith("workers=")), 6)
+    args = sys.argv[1:]
+    opts = dict(a.split("=", 1) for a in args if "=" in a)
+    files = [a for a in args if "=" not in a]
+    out = Path(files[0]) if files else Path(__file__).resolve().parent / "data" / "audit.csv"
+    workers = int(opts.get("workers", 6))
+    MAX_ITERS = int(opts.get("max_iters", MAX_ITERS))
     pts = points()
-    with Pool(workers) as pool, open(out, "w", newline="") as f:
+    if "rerun" in opts:
+        bad = {(r["kind"], int(r["N"]), round(float(r["mu"]), 9), round(float(r["eps"]), 9))
+               for r in csv.DictReader(open(opts["rerun"])) if "inaccurate" in r["scs_status"]}
+        pts = [p for p in pts if (p[0], p[1], round(p[2], 9), round(p[3], 9)) in bad]
+        assert len(pts) == len(bad), "some points of the previous audit were not matched"
+    with Pool(workers, initializer=_set_iters, initargs=(MAX_ITERS,)) as pool, open(out, "w", newline="") as f:
         w = None
         for i, row in enumerate(pool.imap_unordered(run, pts), 1):
             if w is None:

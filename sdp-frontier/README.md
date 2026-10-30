@@ -24,10 +24,18 @@ not the achieved accuracy. The difference between N = 16 and N = 24 is a **stabi
 guaranteed bound on the truncation error. `audit_points.py` re-solves the reference points quoted
 in the paper and records the solver status, primal and dual residuals, the duality gap, the PSD
 and linear-constraint violations recomputed from the returned operators, the energy and the
-phase current (`data/audit.csv`); `audit_summary.py` turns it into the table `data/audit_summary.md`.
-In the reference run 16 of the 33 audited points stopped at the iteration limit with an inaccurate
-status; at all of them the duality gap was at most 2.5·10⁻⁶ in absolute terms and 1.1·10⁻⁴ relative
-to the quoted quantity (the energy, or the centred energy M + ν in the crossover). These one-digit calculations illustrate the analytical results;
+phase current.
+
+- `data/audit.csv` — first audit at the production limit of 4·10⁵ iterations: 16 of the 33 points
+  stopped at the limit with an inaccurate status.
+- `data/audit_rerun_2M.csv` — these 16 points re-solved with `max_iters=2000000 rerun=data/audit.csv`:
+  7 converged, 9 still stopped at the limit. Their values moved by up to 2.8·10⁻⁴ (relative), more
+  than the first-run duality gaps suggested, so the gap can underestimate the actual solver error.
+- `data/audit_final.csv` — the 33 points with the re-solved values where available; the paper quotes
+  these. Final duality gap ≤ 1.1·10⁻⁶ absolute and ≤ 10⁻⁴ relative to the quoted quantity (the energy,
+  or the centred energy M + ν in the crossover) at the 29 points with a nonzero optimum.
+- `audit_summary.py [datadir] [file]` tabulates either audit (`data/audit_summary.md`,
+  `data/audit_final_summary.md`). These one-digit calculations illustrate the analytical results;
 they do not replace the proofs and do not test the multi-digit theorem.
 
 Two sweeps are computed:
@@ -59,7 +67,9 @@ python3 sdp-frontier/sdp_frontier.py                 # all points, 6 worker proc
 python3 sdp-frontier/sdp_frontier.py crossover workers=4
 python3 sdp-frontier/figure_data.py                   # writes figures/numerics_*.tex
 python3 sdp-frontier/audit_points.py                  # re-solves the quoted reference points with diagnostics
-python3 sdp-frontier/audit_summary.py > sdp-frontier/data/audit_summary.md
+python3 sdp-frontier/audit_points.py sdp-frontier/data/audit_rerun_2M.csv max_iters=2000000 rerun=sdp-frontier/data/audit.csv
+python3 sdp-frontier/merge_audit.py                   # builds data/audit_final.csv
+python3 sdp-frontier/audit_summary.py sdp-frontier/data audit_final.csv > sdp-frontier/data/audit_final_summary.md
 ```
 
 Results are appended and flushed point by point, and a rerun skips the points already present,
