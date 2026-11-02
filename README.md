@@ -1,6 +1,15 @@
 # Digital_representation
 Code for numerical checks of digital representations of quantum observables.
 
+## Snapshot coord-digit-v02
+
+This snapshot updates the one-digit figure generator to use final audited
+energies and currents wherever available, retaining the original sweep values
+elsewhere. The generated figure sources have been refreshed accordingly.
+The solver code and numerical CSV data are unchanged; no new optimisation
+runs are included. See [CHANGELOG.md](CHANGELOG.md) for the changes from
+`coord-digit-v01` and the remaining numerical limitations.
+
 The first note's energy–error asymptotics are checked in `numerical-check/`:
 
 - `check.py`, `validate.py`: one-bit quadrature, Fourier minimization, spectral convergence and derivative checks.
@@ -14,6 +23,13 @@ The global one-digit frontier, without assuming the analytic optimisers, is comp
 - `sdp_frontier.py`: semidefinite programme over all instruments with Fourier-truncated Kraus functions (any number of unrecorded channels, complex phases); global frontier at mean momentum 1/2 and 0, and the circulation crossover near balance.
 - `figure_data.py`: PGFPlots figures in `figures/` from the CSV results in `sdp-frontier/data/`.
 - See [`sdp-frontier/README.md`](sdp-frontier/README.md) for the method, output format and run instructions. These scripts need SciPy, CVXPY and SCS in addition to NumPy.
+
+To regenerate the two SDP figure snippets from the stored data, without
+running the solver:
+
+```sh
+python3 sdp-frontier/figure_data.py
+```
 
 ## Run `numerical-check/`
 

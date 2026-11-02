@@ -30,7 +30,7 @@ phase current.
   stopped at the limit with an inaccurate status.
 - `data/audit_rerun_2M.csv` — these 16 points re-solved with `max_iters=2000000 rerun=data/audit.csv`:
   7 converged, 9 still stopped at the limit. Their values moved by up to 2.8·10⁻⁴ (relative), more
-  than the first-run duality gaps suggested, so the gap can underestimate the actual solver error.
+  than the first-run duality gaps suggested, so the first-run gaps did not bound the shifts under further iteration.
 - `data/audit_final.csv` — the 33 points with the re-solved values where available; the paper quotes
   these. Final duality gap ≤ 1.1·10⁻⁶ absolute and ≤ 10⁻⁴ relative to the quoted quantity (the energy,
   or the centred energy M + ν in the crossover) at the 29 points with a nonzero optimum.
@@ -46,7 +46,7 @@ Two sweeps are computed:
 | `crossover` | M(δ, ν) + ν and the optimiser's momentum transfer for δ = ζ\|ν\|^(2/3), ζ = −1.5, …, 2, at ν = ±10⁻³, 4·10⁻³, 1.6·10⁻² | N = 16 | 1e-10 |
 
 The centred crossover values are of order 10⁻⁵–10⁻³, hence the tighter requested tolerance;
-the accuracy actually reached is reported in `data/audit.csv`. The interior-point
+the accuracy reached in the final audit is reported in `data/audit_final.csv`. The interior-point
 solver Clarabel returned values below the proved lower bound on this problem, so it is not used.
 
 ## Output
@@ -77,7 +77,9 @@ so an interrupted sweep can simply be restarted. Points with an active error con
 minutes each with SCS at tolerance 1e-10.
 
 `figure_data.py` writes `figures/numerics_frontier.tex` and `figures/numerics_crossover.tex`
-as `tikzpicture` snippets with the numerical points embedded as inline tables; the analytic
+as `tikzpicture` snippets with the numerical points embedded as inline tables. When
+`data/audit_final.csv` is present, audited energies and currents replace the corresponding
+sweep points; unaudited points retain their original values. The raw sweep CSVs are preserved; the analytic
 curves Φ(ζ), σ*(ζ), δ²/B and 1 + c₃δ are drawn by PGFPlots. The snippets need `pgfplots`
 with the `groupplots` library, `amsmath` and a `\sgn` operator. With `--standalone` the
 script writes complete documents for the manuscript build instead.
