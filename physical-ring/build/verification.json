@@ -1,0 +1,26 @@
+{
+  "selected_N24": 435,
+  "status_counts": {
+    "optimal": 64,
+    "optimal_inaccurate": 371
+  },
+  "max_gap": 7.058417459904209e-06,
+  "max_norm_res": 1.4963736108347795e-07,
+  "max_error_violation": 2.5257920754917507e-12,
+  "min_primal_eigenvalue": -1.5573641584591254e-07,
+  "max_cutoff_difference": 0.022080086050414227,
+  "max_cutoff_difference_eps_ge_008": 0.000642190584072333,
+  "negative_costs_clipped": 0,
+  "verified_figure_points": {
+    "accuracy": 5,
+    "energy": 7,
+    "momentum": 7,
+    "boundary": 7,
+    "global": 9
+  },
+  "excluded_epsilon_004": {
+    "interpolated": 0.9347752163620109,
+    "rigorous_upper": 0.9345991700408794
+  },
+  "max_root_energy_residual_N24": 1.1429214746838667e-06
+}

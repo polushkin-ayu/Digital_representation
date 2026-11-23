@@ -1,5 +1,17 @@
 # Changelog
 
+## coord-digit-v03 — 2026-11-23
+
+Added the physical-ring computational supplement: raw solver records and grid
+specifications, archived-data reproduction, a one-point N=24 solver check,
+standalone TikZ/PDF figures, requirements and SHA-256 manifest.
+All 435 selected grid values and 35 displayed numerical points were reproduced
+from stored logs. One independently recomputed point differs by 4.45e-8 in
+E_kappa units. The full optimization grid was not rerun for this release.
+Known solver warnings and the excluded epsilon=0.04 threshold are preserved.
+Earlier numerical-check and sdp-frontier materials are unchanged.
+
+
 ## coord-digit-v02 — 2026-11-02
 
 The figure-generation pipeline now incorporates the final audit already

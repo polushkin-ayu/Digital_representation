@@ -53,3 +53,17 @@ Scripts overwrite their result files. The exported `.tex` files are snippets for
 ## License and citation
 
 The code is released under the MIT License (see `LICENSE`). Citation metadata are in `CITATION.cff`.
+
+## Binary position readout: physical article (coord-digit-v03)
+
+The [physical-ring supplement](physical-ring/README.md) accompanies
+*Momentum Transfer and Energy Balance in a Binary Position Measurement on a Ring*.
+It contains the raw solver records, a reproducible grid/data audit, a one-point
+solver check, and standalone TikZ sources and PDFs for Figures 6–9.
+The ready-to-use archive is [physical-ring-v1.zip](archives/physical-ring-v1.zip).
+
+The archived-data check reproduces 435 selected N=24 values and 35 plotted points.
+371 selected values retain `optimal_inaccurate` status. The known inaccurate
+threshold at epsilon=0.04 remains in diagnostics and is excluded from the figure.
+These results do not constitute rigorous numerical error certificates.
+Previous `numerical-check/` and `sdp-frontier/` data are unchanged.

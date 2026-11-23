@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this code or its numerical results, please cite it as below."
 title: "Digital_representation: numerical checks for the digital representation of quantum observables"
 type: software
-version: coord-digit-v02
-date-released: '2026-11-02'
+version: coord-digit-v03
+date-released: '2026-11-23'
 authors:
   - family-names: Polushkin
     given-names: A. Yu.
